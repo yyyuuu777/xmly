@@ -1,0 +1,124 @@
+
+1.  可以使用常量来代替代码中的实际内容，避免写错
+
+2.  控件的id按照页面。功能最终来指定  如 页面_功能_XXX 这种ID
+
+3.  FragmentStatePagerAdapter在切换Fragment的时候，
+    移出去的Fragment的会被销毁
+
+4.  FragmentPagerAdapter在切换Fragment的时候，
+    移出去的Fragment，之后调用到onDestoryView
+
+5.  在FragmentPagerAdapter，构造方法中的FragmentManager
+    要使用getChildFragmentManager()来创建
+
+6.  带有返回值的方法，推荐只有一个return
+
+7.  现在服务器开发的时候，将网址定义成非常规则的，网址路径像
+    文件夹一样。看到就知道什么含义；GET，POST，PUT请求都定义好的对应的功能
+    这种方式通常称作REST风格
+
+8.  代码的提取：重复代码的提取，消重；接口 ：用于控制类必须要包含的方法。。
+    抽象类：：可以定义多个类公共的代码，同时也可以让每一个子类实现特有的方法
+
+9.  关于数据的解析。。谁的数据谁自己解析
+
+10. ！！！默认情况下！！！
+        listView认为每一个Item的类型是相同的，因此会直接复用
+        所有的每一个布局都能够复用
+
+        如果item的布局是不同的，！！！必须设置adapter中的！！！
+        两个方法，来检查item中的布局类型
+        如果不进行设置，布局就混乱了。可能出现空指针
+
+        错乱的原因是convertView被设置错了
+
+11. 当baseAdapter重写了getViewTypeCount()方法，返回数值大于1的时候。
+    listView内部会自动创建试图缓冲区，实际上就是一个数组
+
+    ArrayList<View>[] buffer = new ArrayList<>[getViewTypeCount()];
+
+    这个缓冲区就是用于存储可以复用的视图
+
+    当item从listView的可见区域移出去的时候；
+    就会检查item对应的viewType，相当于数组的索引
+
+    例如：0， 就会把buffer[0].add[View]
+
+    有item需要加载和现实的时候，先检查这个item对应的视图的类型 view type
+
+        例如 返回0，代表ListView需要从缓冲区buffer[0] 查找是否有视图
+             返回1，就去buffer[1] 查找试图
+
+             如果找到视图，调用getview的时候。convertView就会设置为可以复用的视图了
+
+
+12. ListView中item的点击规则
+
+    ListView Item中如果有任何可以接受用户输入的控件，
+    例如button ImageButton EditText CheckBox
+    那么 ListView自身的Item的点击事件回调，OnItemClick就不会调用了
+
+    长按效果也没有了
+
+    因为ListView会检查每一个Item事件传递，如果Item内部包含
+    可以获取焦点的时间，以及可以和用户交互的空间，那么ListView默认会把点击事件，传给
+    邻近的 控件，如果点击到Item空白的地方，事件就不处理了
+
+    时间不处理，就不会有效果
+
+    如何实现Item和内部都能够点击
+        两种方式：
+            1.在！！！item的布局中！！！最顶级的标签中，添加
+                android:descendantFocusability="blocksDescendants"
+
+                作用，代表ListView的item的顶级布局把焦点拦截了，即使内部还有可以获得
+                焦点的控件，事件也不会传递，直接由item处理
+
+                按钮的点击即使没有焦点，因为使用touch触摸事件
+                能够在没有焦点的情况下，直接传递给相应的按钮，依然可以实现点击
+
+
+            2.第二种方法
+
+                将item中所有可以获取焦点的控件设置属性
+                android：focusable="false" 就可以，但是要设置多个控件
+
+
+13. Item中按钮或者checkBox等控件需要进行事件处理的时候，
+
+    因为时间回掉接口自身没有 包含挡墙位置的，所以在getView的时候
+
+    每一次都需要给控件设置Tag，tag的值就是position
+
+    在事件处理的时候，除了获取控件id，还需要获取tag，转换为position
+
+14. 建议  ：  异步任务在进行网络请求之前
+            需要检查当前手机是否有网络连接
+
+            1) 每次执行异步任务的时候，都执行网络连接的检查
+            2)
+
+            onPreExecute()
+            doInBackground()
+            onPostExecute()
+
+15. 关于service的生命周期
+            1) 当第一次调用startService()的时候，系统中不存在指定的服务
+               那么安卓系统会创建服务并且调用onCreate()  onStartCommand()
+
+            2) 当调用startService()的时候，系统中存在服务的时候 安卓系统
+               会自动抵用当前服务的onStartCommand()，不会调用onCreate方法
+
+            3) 当调用stopService()的时候，如果当前服务没有被绑定的时候
+               那么服务会进行销毁
+
+            4) 如果使用bindService()并且系统中不存在指定的活动的服务。安卓系统可以
+               创建服务对象，并且调用onCreate方法，之后调用onBind方法。
+
+            5) 调用bindService()的时候，如果系统已经存在指定的服务，那么直接调用
+               onBind()方法
+
+            6) 服务unBindService() 时，会接触接口和服务的绑定，解除绑定会
+               调用服务的onUnBind()方法..如果当前服务没有任何绑定了，并且
+               服务没有执行过startService() 的话，那么服务将会销毁

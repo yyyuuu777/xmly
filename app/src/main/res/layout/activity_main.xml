@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.example.kelin.zhufengfm.MainActivity">
+
+    <FrameLayout
+        android:id="@+id/main_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </FrameLayout>
+
+    <RadioGroup
+        android:id="@+id/main_tab_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/main_tab_item_discovery"
+            style="@style/MainTabItem"
+            android:text="发现"
+            />
+
+        <RadioButton
+            android:id="@+id/main_tab_item_custom"
+            style="@style/MainTabItem"
+            android:text="定制听"
+            android:checked="false"
+            />
+
+        <RadioButton
+            style="@style/MainTabItem"
+            />
+
+        <RadioButton
+            android:id="@+id/main_tab_item_download"
+            style="@style/MainTabItem"
+            android:text="下载听"
+            />
+
+        <RadioButton
+            android:id="@+id/main_tab_item_personal"
+            style="@style/MainTabItem"
+            android:text="我"
+            />
+
+    </RadioGroup>
+
+
+</LinearLayout>

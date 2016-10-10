@@ -1,0 +1,30 @@
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+
+# IntelliJ IDEA project Files
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Eclipse Project
+.classpath
+.project
+.settings/
+
+# Android build
+bin/
+local.properties
+build/
+.gradle
+
+# OS Auto gen
+Thumbs.db
+.DS_Store
